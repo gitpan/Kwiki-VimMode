@@ -4,7 +4,7 @@ use warnings;
 use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 
-our $VERSION = 0.03_1;
+our $VERSION = 0.04;
 
 const class_title => 'color hiliting using Vim';
 const class_id => 'vim_mode';
@@ -22,7 +22,8 @@ sub to_html {
     require Text::VimColor;
     my $string = $self->block_text;
     chomp $string;
-    $string =~ s/^ filetype: \s* (\w+) \s* \n+//smx;
+    $ENV{PATH} = "/usr/local/bin:$ENV{PATH}";
+    $string =~ s/^ filetype: \s* (\w+) \s* \n+//sx;
     my @filetype = $1 ? ( filetype => $1 ) : ();
     my $vim = Text::VimColor->new(
         string=>$string, @filetype,
@@ -82,6 +83,10 @@ L<Text::VimColor>/Vim should hopefully pick up the correct syntax automatically.
         # ...
     </VirtualHost>
     .vim
+
+=head1 BUGS
+
+It doesn't work on Mac OS X! Check out L<https://rt.cpan.org/NoAuth/Bug.html?id=7316>
 
 =head1 AUTHORS
 
