@@ -1,0 +1,14 @@
+name: Kwiki-VimMode
+version: 0.01
+abstract: VimMode preformatted forms of text
+author: Ian Langworth <langworth.com>
+license: perl
+distribution_type: module
+requires:
+  perl: 5.6.1
+  Kwiki: 0.30
+  Text::VimColor: 0
+no_index:
+  directory:
+    - inc
+generated_by: Module::Install version 0.33
