@@ -4,7 +4,7 @@ use warnings;
 use Kwiki::Plugin '-Base';
 use Kwiki::Installer '-base';
 
-our $VERSION = 0.01;
+our $VERSION = 0.02;
 
 const class_title => 'color hiliting using Vim';
 const class_id => 'vim_mode';
@@ -22,9 +22,13 @@ sub to_html {
     require Text::VimColor;
     my $string = $self->block_text;
     $string =~ s/^ filetype: \s* (\w+) \s* \n+//smx;
-    my @filetype = $1 ? ( filetype => $1 ) : ();
-    my $vim = Text::VimColor->new(string=>$string,@filetype);
-    return '<pre class="vim">'.$vim->html.'</pre>';
+    chomp $string;
+    my $vim = Text::VimColor->new(
+        string => $string,
+        ( $1 ? ( filetype => $1 ) : () ),
+        vim_options => [ qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline" ],
+    );
+    return '<pre class="vim">' . $vim->html . '</pre>';
 }
 
 package Kwiki::VimMode;
@@ -34,14 +38,13 @@ __DATA__
 
 =head1 NAME 
 
-Kwiki::VimMode - VimMode preformatted forms of text
+Kwiki::VimMode - syntax highlight preformatted forms of text
 
 =head1 SYNOPSIS
 
  $ cpan Kwiki::VimMode
  $ cd /path/to/kwiki
- $ echo "Kwiki::VimMode" >> plugins
- $ kwiki -update
+ $ kwiki -add Kwiki::VimMode
 
 =head1 DESCRIPTION
 
@@ -78,6 +81,10 @@ L<Text::VimColor>/Vim should hopefully pick up the correct syntax automatically.
         # ...
     </VirtualHost>
     .vim
+
+=head1 NOTES
+
+Modelines are explicitly ignored.
 
 =head1 AUTHORS
 
