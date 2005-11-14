@@ -1,18 +1,19 @@
 package Kwiki::VimMode;
 use strict;
 use warnings;
-use Kwiki::Plugin '-Base';
-use Kwiki::Installer '-base';
 
-our $VERSION = 0.04;
+use Kwiki::Plugin -Base;
+use Kwiki::Installer -base;
+
+our $VERSION = 0.05;
 
 const class_title => 'color hiliting using Vim';
-const class_id => 'vim_mode';
-const css_file => 'vim_mode.css';
+const class_id    => 'vim_mode';
+const css_file    => 'vim_mode.css';
 
 sub register {
     my $registry = shift;
-    $registry->add(wafl => vim => 'Kwiki::VimMode::Wafl');
+    $registry->add( wafl => vim => 'Kwiki::VimMode::Wafl' );
 }
 
 package Kwiki::VimMode::Wafl;
@@ -26,14 +27,14 @@ sub to_html {
     $string =~ s/^ filetype: \s* (\w+) \s* \n+//sx;
     my @filetype = $1 ? ( filetype => $1 ) : ();
     my $vim = Text::VimColor->new(
-        string=>$string, @filetype,
-        vim_options=>[qw( -RXZ -i NONE -u NONE -N ),"+set nomodeline"]
+        string => $string,
+        @filetype,
+        vim_options => [ qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline" ]
     );
-    return '<pre class="vim">'.$vim->html."</pre>\n";
+    return '<pre class="vim">' . $vim->html . "</pre>\n";
 }
 
 package Kwiki::VimMode;
-1;
 
 __DATA__
 
@@ -90,7 +91,7 @@ It doesn't work on Mac OS X! Check out L<https://rt.cpan.org/NoAuth/Bug.html?id=
 
 =head1 AUTHORS
 
-Ian Langworth <langworth.com>
+Ian Langworth <ian@cpan.org>
 
 =head1 SEE ALSO
 
